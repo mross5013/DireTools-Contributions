@@ -1,0 +1,60 @@
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.062, 0.875);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.188, 0.062, 0.188, 0.812, 0.125, 0.812);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.438, 0.125, 0.438, 0.562, 0.188, 0.562);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.438, 0.188, 0.375, 0.562, 0.312, 0.438);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.375, 0.188, 0.438, 0.438, 0.312, 0.562);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.562, 0.188, 0.438, 0.625, 0.312, 0.562);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.438, 0.188, 0.562, 0.562, 0.312, 0.625);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.438, 0.312, 0.438, 0.562, 0.375, 0.562);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.25, 0.125, 0.25, 0.312, 0.188, 0.312);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.25, 0.125, 0.688, 0.312, 0.188, 0.75);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.688, 0.125, 0.25, 0.75, 0.188, 0.312);
+private static final AxisAlignedBB CUBE = new AxisAlignedBB(0.688, 0.125, 0.688, 0.75, 0.188, 0.75);
+/**
+* AxisAlignedBBs and methods getBoundingBox, collisionRayTrace, and collisionRayTrace generated using MrCrayfish's Model Creator <a href="https://mrcrayfish.com/tools?id=mc">https://mrcrayfish.com/tools?id=mc</a>
+*/
+private static final List<AxisAlignedBB> COLLISION_BOXES = Lists.newArrayList(CUBE, CUBE, CUBE, CUBE, CUBE, CUBE, CUBE, CUBE, CUBE, CUBE, CUBE, CUBE);
+private static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.125, 0, 0.125, 0.875, 0.375, 0.875);
+
+@Override
+public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+{
+    return BOUNDING_BOX;
+}
+
+@Override
+public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity, boolean isActualState)
+{
+    entityBox = entityBox.offset(-pos.getX(), -pos.getY(), -pos.getZ());
+    for (AxisAlignedBB box : COLLISION_BOXES)
+    {
+        if (entityBox.intersects(box))
+            collidingBoxes.add(box.offset(pos));
+    }
+}
+
+@Override
+@Nullable
+public RayTraceResult collisionRayTrace(IBlockState state, World world, BlockPos pos, Vec3d start, Vec3d end)
+{
+    double distanceSq;
+    double distanceSqShortest = Double.POSITIVE_INFINITY;
+    RayTraceResult resultClosest = null;
+    RayTraceResult result;
+    start = start.subtract(pos.getX(), pos.getY(), pos.getZ());
+    end = end.subtract(pos.getX(), pos.getY(), pos.getZ());
+    for (AxisAlignedBB box : COLLISION_BOXES)
+    {
+        result = box.calculateIntercept(start, end);
+        if (result == null)
+            continue;
+
+        distanceSq = result.hitVec.squareDistanceTo(start);
+        if (distanceSq < distanceSqShortest)
+        {
+            distanceSqShortest = distanceSq;
+            resultClosest = result;
+        }
+    }
+    return resultClosest == null ? null : new RayTraceResult(RayTraceResult.Type.BLOCK, resultClosest.hitVec.addVector(pos.getX(), pos.getY(), pos.getZ()), resultClosest.sideHit, pos);
+}
