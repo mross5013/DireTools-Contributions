@@ -1,0 +1,42 @@
+/* Member variables */
+public final VoxelShape SHAPE;
+
+/* Place in Constructor */
+SHAPE = this.generateShape();
+
+/* Methods */
+private VoxelShape generateShape()
+{
+    List<VoxelShape> shapes = new ArrayList<>();
+    shapes.add(Block.makeCuboidShape(0.125, 0, 0.125, 0.875, 0.062, 0.875)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.188, 0.062, 0.188, 0.812, 0.125, 0.812)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.438, 0.125, 0.438, 0.562, 0.188, 0.562)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.438, 0.188, 0.375, 0.562, 0.312, 0.438)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.375, 0.188, 0.438, 0.438, 0.312, 0.562)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.562, 0.188, 0.438, 0.625, 0.312, 0.562)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.438, 0.188, 0.562, 0.562, 0.312, 0.625)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.438, 0.312, 0.438, 0.562, 0.375, 0.562)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.25, 0.125, 0.25, 0.312, 0.188, 0.312)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.25, 0.125, 0.688, 0.312, 0.188, 0.75)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.688, 0.125, 0.25, 0.75, 0.188, 0.312)); // CUBE
+    shapes.add(Block.makeCuboidShape(0.688, 0.125, 0.688, 0.75, 0.188, 0.75)); // CUBE
+
+    VoxelShape result = ShapeUtils.empty();
+    for(VoxelShape shape : shapes)
+    {
+        result = ShapeUtils.combine(result, shape, IBooleanFunction.OR);
+    }
+    return result.simplify();
+}
+
+@Override
+public VoxelShape getShape(IBlockState state, IBlockReader reader, BlockPos pos)
+{
+    return SHAPE;
+}
+
+@Override
+public VoxelShape getCollisionShape(IBlockState state, IBlockReader reader, BlockPos pos)
+{
+    return SHAPE;
+}
