@@ -1,0 +1,8 @@
+# Made in Blockbench 3.7.4
+newmtl m_0
+map_Kd Laser Inventory Node Bottom 64x64.png 
+newmtl m_1
+map_Kd Laser Inventory Node Side 64x64.png 
+newmtl m_2
+map_Kd Laser Inventory Node Top 64x64.png 
+newmtl none
