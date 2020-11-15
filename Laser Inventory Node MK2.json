@@ -5,7 +5,8 @@
 	"textures": {
 		"0": "Laser Inventory Node/Laser Inventory Node Bottom 64x64",
 		"1": "Laser Inventory Node/Laser Inventory Node Side 64x64",
-		"2": "Laser Inventory Node/Laser Inventory Node Top 64x64"
+		"2": "Laser Inventory Node/Laser Inventory Node Top 64x64",
+		"particle": "Laser Inventory Node/Laser Inventory Node Top 64x64"
 	},
 	"elements": [
 		{
